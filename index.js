@@ -122,8 +122,12 @@ let currWorld = worldsArray[0];
 
 
 let pacMan = {
+    xUnit: null,
+    yUnit: null,
+    counter: 0,
     x: 1,
-    y: 1
+    y: 1,
+    init: true,
 }
 
 let ghostArray = [
@@ -260,9 +264,20 @@ function updatePacMan(e) {
         document.querySelector('.pacman-img').style.transform = 'scaleX(-1)';
     }
 
-    let brickWidth = document.querySelector('.row .wall').offsetWidth / 10;
-    document.getElementById('pacman').style.top = `${pacMan.y * brickWidth}px`;
-    document.getElementById('pacman').style.left = `${pacMan.x * brickWidth}px`;
+    let brickWidth = document.querySelector('.row .wall').offsetWidth,
+        moveDelta;
+
+    if (pacMan.init) {
+        pacMan.xUnit = pacMan.x * brickWidth;
+        pacMan.yUnit = pacMan.y * brickWidth;
+        pacMan.init = false;
+    } else {
+        pacMan.xUnit = pacMan.xUnit + pacMan.counter * brickWidth / 3;
+        pacMan.yUnit = pacMan.yUnit + pacMan.counter * brickWidth / 3;
+    }
+
+    document.getElementById('pacman').style.top = `${pacMan.xUnit}px`;
+    document.getElementById('pacman').style.left = `${pacMan.yUnit}px`;
 
     checkDeath();
 }

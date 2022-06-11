@@ -122,8 +122,13 @@ let currWorld = worldsArray[0];
 
 
 let pacMan = {
+    xUnit: null,
+    yUnit: null,
+    deltaX: 0,
+    deltaY: 0,
     x: 1,
-    y: 1
+    y: 1,
+    init: true,
 }
 
 let ghostArray = [
@@ -230,17 +235,27 @@ generateWorld(currWorld)
 
 
 document.onkeydown = function movePacman(e) {
+    let brickWidth = document.querySelector('.row .wall').offsetWidth / 10;
+
     if (e.keyCode === 38 && currWorld[pacMan.y - 1][pacMan.x] != 2) { // UP
-        pacMan.y--;
+        pacMan.yCounter--;
+        pacMan.deltaY--;
+        pacMan.yUnit = pacMan.yUnit - brickWidth;
     }
     else if (e.keyCode === 39 && currWorld[pacMan.y][pacMan.x + 1] != 2) { // Right
-        pacMan.x++
+        pacMan.xCounter++
+        pacMan.deltaX++;
+        pacMan.xUnit = pacMan.xUnit + brickWidth;
     }
     else if (e.keyCode === 40 && currWorld[pacMan.y + 1][pacMan.x] != 2) { // Down
-        pacMan.y++
+        pacMan.yCounter++;
+        pacMan.deltaY++;
+        pacMan.yUnit = pacMan.yUnit + brickWidth;
     }
     else if (e.keyCode === 37 && currWorld[pacMan.y][pacMan.x - 1] != 2) { // Left
-        pacMan.x--
+        pacMan.xCounter--;
+        pacMan.deltaX--;
+        pacMan.xUnit = pacMan.xUnit - brickWidth;
     }
 
     updatePacMan(e);
@@ -249,20 +264,51 @@ document.onkeydown = function movePacman(e) {
 }
 
 function updatePacMan(e) {
+    // Initialize pacman to position (1,1):
+    let brickWidth = document.querySelector('.row .wall').offsetWidth;
+    if (pacMan.init) {
+        pacMan.xUnit = pacMan.x * brickWidth;
+        pacMan.yUnit = pacMan.y * brickWidth;
+        pacMan.init = false;
+    }
+
+    // Change pacMan orientation:
     if (e?.keyCode === 38) {
         document.querySelector('.pacman-img').style.transform = `rotate(-90deg)`;
-    } else if (e?.keyCode === 39) {
+    }
+    else if (e?.keyCode === 39) {
         document.querySelector('.pacman-img').style.transform = `rotate(0deg)`;
-    } else if (e?.keyCode === 40) {
+    }
+    else if (e?.keyCode === 40) {
         document.querySelector('.pacman-img').style.transform = `rotate(90deg)`;
-    } else if (e?.keyCode === 37) {
+    }
+    else if (e?.keyCode === 37) {
         document.querySelector('.pacman-img').style.transform = `rotate(0deg)`;
         document.querySelector('.pacman-img').style.transform = 'scaleX(-1)';
     }
 
-    let brickWidth = document.querySelector('.row .wall').offsetWidth / 10;
-    document.getElementById('pacman').style.top = `${pacMan.y * brickWidth}px`;
-    document.getElementById('pacman').style.left = `${pacMan.x * brickWidth}px`;
+    // Change pacMan array position:
+    if (pacMan.deltaX === 10) {
+        pacMan.x++;
+        pacMan.deltaX = 0;
+    }
+    else if (pacMan.deltaX === -10) {
+        pacMan.x--;
+        pacMan.deltaX = 0;
+    }
+
+    if (pacMan.deltaY === 10) {
+        pacMan.y++;
+        pacMan.deltaY = 0;
+    }
+    else if (pacMan.deltaY === -10) {
+        pacMan.y--;
+        pacMan.deltaY = 0;
+    }
+
+
+    document.getElementById('pacman').style.top = `${pacMan.yUnit}px`;
+    document.getElementById('pacman').style.left = `${pacMan.xUnit}px`;
 
     checkDeath();
 }
@@ -287,7 +333,6 @@ function showCherry() {
         }
     }
 
-    console.log('count:', cherryTrigger, 'total:', totalFruits);
 }
 
 /* ### Ghosts ### */
@@ -357,7 +402,6 @@ function checkDeath() {
             return true;
         }
     })) {
-        console.log('game-over')
         clearInterval(ghosty)
         document.querySelector('.pacman-img').style.backgroundImage = "url('death.gif')";
         setTimeout(() => {

@@ -23,7 +23,7 @@ html {
 
 #menu {
     width: 100%;
-    aspect-ratio: 6/1;
+    padding: 1rem 0 0;
 
     background-color: #13432b;
     border-bottom: 1px solid red;
@@ -36,8 +36,10 @@ html {
 .menu-container {
     background: black;
     width: 95%;
-    aspect-ratio: 8/1;
     border: 5px;
+
+    display: flex;
+    padding: 0.5rem 1rem;
 }
 
 .container {
@@ -47,16 +49,25 @@ html {
 }
 
 .scoreboard {
-    min-width: 150px;
-    aspect-ratio: 2/1;
-    border: 1px solid red;
-    position: absolute;
-    background-color: gray;
-    border-radius: 5px;
-    border: 5px double blue;
-    top: -80px;
-
     color: yellow;
+    margin-right: auto;
+    font-family: 'Fascinate', cursive;
+}
+
+.score {
+    font-size: 2.5rem;
+}
+
+.levels>button {
+    width: 25px;
+    aspect-ratio: 1/1;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.levels>button:nth-of-type(1) {
+    background-color: greenyellow;
 }
 
 #world {
@@ -68,7 +79,6 @@ html {
     position: absolute;
     width: clamp(15px, 5vw, 35px);
     aspect-ratio: 1/1;
-    border: 1px solid blue;
     z-index: 1;
 }
 
@@ -110,7 +120,6 @@ html {
     position: absolute;
     width: clamp(15px, 5vw, 35px);
     aspect-ratio: 1/1;
-    border: 1px solid blue;
 }
 
 .ghost-1-img,

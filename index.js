@@ -136,35 +136,62 @@ let ghostArray = [
         // Ghost One
         id: '#ghost-1',
         x: 9,
-        y: 8,
-        lastDirection: 'left'
+        y: 5,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'left',
+        init: true
     },
     {
         // Ghost Two
         id: '#ghost-2',
-        x: 1,
-        y: 18,
+        x: 18,
+        y: 1,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'right',
+        init: true
     },
     {
         // Ghost Three
         id: '#ghost-3',
-        x: 7,
-        y: 12,
-        lastDirection: 'left'
+        x: 8,
+        y: 16,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'up',
+        init: true
     },
     {
         // Ghost Four
         id: '#ghost-4',
-        x: 15,
-        y: 18,
+        x: 5,
+        y: 16,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'down',
+        init: true
     },
     {
         // Ghost Five
         id: '#ghost-5',
-        x: 10,
-        y: 2,
+        x: 14,
+        y: 16,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'left',
+        init: true
     },
-
 ]
 
 let cherryTrigger = 0;
@@ -339,12 +366,41 @@ function showCherry() {
 
 
 function updateGhosts() {
+
+
     let brickWidth = document.querySelector('.row .wall').offsetWidth;
     for (let i = 0; i < ghostArray.length; i++) {
-        let ghost = document.querySelector(`${ghostArray[i].id}`);
 
-        ghost.style.top = `${ghostArray[i].y * brickWidth}px`;
-        ghost.style.left = `${ghostArray[i].x * brickWidth}px`;
+        // Initialize ghosts to their start positions:
+        if (ghostArray[i].init) {
+            ghostArray[i].xUnit = ghostArray[i].x * brickWidth;
+            ghostArray[i].yUnit = ghostArray[i].y * brickWidth;
+            ghostArray[i].init = false;
+        }
+
+        // Change ghost position:
+        if (ghostArray[i].deltaX === 10) {
+            ghostArray[i].x++;
+            ghostArray[i].deltaX = 0;
+        }
+        else if (ghostArray[i].deltaX === -10) {
+            ghostArray[i].x--;
+            ghostArray[i].deltaX = 0;
+        }
+
+        if (ghostArray[i].deltaY === 10) {
+            ghostArray[i].y++;
+            ghostArray[i].deltaY = 0;
+        }
+        else if (ghostArray[i].deltaY === -10) {
+            ghostArray[i].y--;
+            ghostArray[i].deltaY = 0;
+        }
+
+        let ghostSprite = document.querySelector(`${ghostArray[i].id}`);
+        console.log(ghostSprite)
+        ghostSprite.style.top = `${ghostArray[i].yUnit}px`;
+        ghostSprite.style.left = `${ghostArray[i].xUnit}px`;
     }
 
     checkDeath();
@@ -355,40 +411,63 @@ function moveGhosts() {
     // Math.floor( Math.random () * (max - min) + min);
 
     for (let i = 0; i < ghostArray.length; i++) {
-        let moveToken = Math.floor(Math.random() * 4);
 
-        let leftMove = [
-            (moveToken === 0),
-            (currWorld[ghostArray[i].y][ghostArray[i].x - 1] != 2),
-        ];
+        let brickWidth = document.querySelector('.row .wall').offsetWidth;
 
-        let rightMove = [
-            (moveToken === 1),
-            (currWorld[ghostArray[i].y][ghostArray[i].x + 1] != 2),
-        ];
+        let isLeftValid =
+            [
+                (ghostArray[i].move === 'left'),
+                (currWorld[ghostArray[i].y][ghostArray[i].x - 1] != 2),
+            ];
 
-        let downMove = [
-            (moveToken === 2),
-            (currWorld[ghostArray[i].y + 1][ghostArray[i].x] != 2),
-        ];
+        let isRightValid =
+            [
+                (ghostArray[i].move === 'right'),
+                (currWorld[ghostArray[i].y][ghostArray[i].x + 1] != 2),
+            ];
 
-        let upMove = [
-            (moveToken === 3),
+        let isDownValid =
+            [
+                (ghostArray[i].move === 'down'),
+                (currWorld[ghostArray[i].y + 1][ghostArray[i].x] != 2),
+            ];
+
+        let isUpValid = [
+            (ghostArray[i].move === 'up'),
             (currWorld[ghostArray[i].y - 1][ghostArray[i].x] != 2),
         ];
 
 
-        if (leftMove.every(condition => condition)) { // Left
-            ghostArray[i].x--;
+        if (isLeftValid.every(condition => condition)) {
+            ghostArray[i].xUnit = ghostArray[i].xUnit - brickWidth / 10;
+            ghostArray[i].deltaX--;
         }
-        else if (rightMove.every(condition => condition)) { // Right
-            ghostArray[i].x++;
+        else if (isRightValid.every(condition => condition)) { // Right
+            ghostArray[i].xUnit = ghostArray[i].xUnit + brickWidth / 10;
+            ghostArray[i].deltaX++;
         }
-        else if (downMove.every(condition => condition)) { // Down
-            ghostArray[i].y++
+        else if (isDownValid.every(condition => condition)) { // Down
+            ghostArray[i].yUnit = ghostArray[i].yUnit + brickWidth / 10;
+            ghostArray[i].deltaY++;
         }
-        else if (upMove.every(condition => condition)) { // Up
-            ghostArray[i].y--;
+        else if (isUpValid.every(condition => condition)) { // Up
+            ghostArray[i].yUnit = ghostArray[i].yUnit - brickWidth / 10;
+            ghostArray[i].deltaY--;
+        } else {
+            let moveToken = Math.floor(Math.random() * 4);
+
+            if (moveToken === 0) {
+                ghostArray[i].move = 'up';
+            }
+            else if (moveToken === 1) {
+                ghostArray[i].move = 'right';
+            }
+            else if (moveToken === 2) {
+                ghostArray[i].move = 'down';
+            } else {
+                ghostArray[i].move = 'left';
+            }
+
         }
 
         updateGhosts();

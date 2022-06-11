@@ -124,7 +124,8 @@ let currWorld = worldsArray[0];
 let pacMan = {
     xUnit: null,
     yUnit: null,
-    counter: 0,
+    xCounter: 0,
+    yCounter: 0,
     x: 1,
     y: 1,
     init: true,
@@ -234,17 +235,23 @@ generateWorld(currWorld)
 
 
 document.onkeydown = function movePacman(e) {
+    let brickWidth = document.querySelector('.row .wall').offsetWidth / 3;
+
     if (e.keyCode === 38 && currWorld[pacMan.y - 1][pacMan.x] != 2) { // UP
-        pacMan.y--;
+        pacMan.yCounter--;
+        pacMan.yUnit = pacMan.yUnit - brickWidth;
     }
     else if (e.keyCode === 39 && currWorld[pacMan.y][pacMan.x + 1] != 2) { // Right
-        pacMan.x++
+        pacMan.xCounter++
+        pacMan.xUnit = pacMan.xUnit + brickWidth;
     }
     else if (e.keyCode === 40 && currWorld[pacMan.y + 1][pacMan.x] != 2) { // Down
-        pacMan.y++
+        pacMan.yCounter++
+        pacMan.yUnit = pacMan.yUnit + brickWidth;
     }
     else if (e.keyCode === 37 && currWorld[pacMan.y][pacMan.x - 1] != 2) { // Left
-        pacMan.x--
+        pacMan.xCounter--
+        pacMan.xUnit = pacMan.xUnit - brickWidth;
     }
 
     updatePacMan(e);
@@ -264,20 +271,16 @@ function updatePacMan(e) {
         document.querySelector('.pacman-img').style.transform = 'scaleX(-1)';
     }
 
-    let brickWidth = document.querySelector('.row .wall').offsetWidth,
-        moveDelta;
+    let brickWidth = document.querySelector('.row .wall').offsetWidth;
 
     if (pacMan.init) {
         pacMan.xUnit = pacMan.x * brickWidth;
         pacMan.yUnit = pacMan.y * brickWidth;
         pacMan.init = false;
-    } else {
-        pacMan.xUnit = pacMan.xUnit + pacMan.counter * brickWidth / 3;
-        pacMan.yUnit = pacMan.yUnit + pacMan.counter * brickWidth / 3;
     }
 
-    document.getElementById('pacman').style.top = `${pacMan.xUnit}px`;
-    document.getElementById('pacman').style.left = `${pacMan.yUnit}px`;
+    document.getElementById('pacman').style.top = `${pacMan.yUnit}px`;
+    document.getElementById('pacman').style.left = `${pacMan.xUnit}px`;
 
     checkDeath();
 }
@@ -302,7 +305,6 @@ function showCherry() {
         }
     }
 
-    console.log('count:', cherryTrigger, 'total:', totalFruits);
 }
 
 /* ### Ghosts ### */
@@ -372,7 +374,6 @@ function checkDeath() {
             return true;
         }
     })) {
-        console.log('game-over')
         clearInterval(ghosty)
         document.querySelector('.pacman-img').style.backgroundImage = "url('death.gif')";
         setTimeout(() => {

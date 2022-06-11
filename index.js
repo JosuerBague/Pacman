@@ -136,7 +136,7 @@ let ghostArray = [
         // Ghost One
         id: '#ghost-1',
         x: 9,
-        y: 8,
+        y: 5,
         xUnit: null,
         yUnit: null,
         deltaX: 0,
@@ -144,55 +144,54 @@ let ghostArray = [
         move: 'left',
         init: true
     },
-    // {
-    //     // Ghost Two
-    //     id: '#ghost-2',
-    //     x: 1,
-    //     y: 18,
-    //     xUnit: null,
-    //     yUnit: null,
-    //     deltaX: 0,
-    //     deltaY: 0,
-    //     move: 'right',
-    //     init: true
-    // },
-    // {
-    //     // Ghost Three
-    //     id: '#ghost-3',
-    //     x: 7,
-    //     y: 12,
-    //     xUnit: null,
-    //     yUnit: null,
-    //     deltaX: 0,
-    //     deltaY: 0,
-    //     move: 'up',
-    //     init: true
-    // },
-    // {
-    //     // Ghost Four
-    //     id: '#ghost-4',
-    //     x: 15,
-    //     y: 18,
-    //     xUnit: null,
-    //     yUnit: null,
-    //     deltaX: 0,
-    //     deltaY: 0,
-    //     move: 'down',
-    //     init: true
-    // },
-    // {
-    //     // Ghost Five
-    //     id: '#ghost-5',
-    //     x: 10,
-    //     y: 2,
-    //     xUnit: null,
-    //     yUnit: null,
-    //     deltaX: 0,
-    //     deltaY: 0,
-    //     move: 'left',
-    //     init: true
-    // },
-
+    {
+        // Ghost Two
+        id: '#ghost-2',
+        x: 18,
+        y: 1,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'right',
+        init: true
+    },
+    {
+        // Ghost Three
+        id: '#ghost-3',
+        x: 8,
+        y: 16,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'up',
+        init: true
+    },
+    {
+        // Ghost Four
+        id: '#ghost-4',
+        x: 5,
+        y: 16,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'down',
+        init: true
+    },
+    {
+        // Ghost Five
+        id: '#ghost-5',
+        x: 14,
+        y: 16,
+        xUnit: null,
+        yUnit: null,
+        deltaX: 0,
+        deltaY: 0,
+        move: 'left',
+        init: true
+    },
 ]
 
 let cherryTrigger = 0;
@@ -381,24 +380,25 @@ function updateGhosts() {
 
         // Change ghost position:
         if (ghostArray[i].deltaX === 10) {
-            ghostArray.x++;
-            ghostArray.deltaX = 0;
+            ghostArray[i].x++;
+            ghostArray[i].deltaX = 0;
         }
         else if (ghostArray[i].deltaX === -10) {
-            ghostArray.x--;
-            ghostArray.deltaX = 0;
+            ghostArray[i].x--;
+            ghostArray[i].deltaX = 0;
         }
 
         if (ghostArray[i].deltaY === 10) {
-            ghostArray++;
-            ghostArray.deltaY = 0;
+            ghostArray[i].y++;
+            ghostArray[i].deltaY = 0;
         }
         else if (ghostArray[i].deltaY === -10) {
-            ghostArray--;
-            ghostArray.deltaY = 0;
+            ghostArray[i].y--;
+            ghostArray[i].deltaY = 0;
         }
 
         let ghostSprite = document.querySelector(`${ghostArray[i].id}`);
+        console.log(ghostSprite)
         ghostSprite.style.top = `${ghostArray[i].yUnit}px`;
         ghostSprite.style.left = `${ghostArray[i].xUnit}px`;
     }
@@ -440,19 +440,19 @@ function moveGhosts() {
 
         if (isLeftValid.every(condition => condition)) {
             ghostArray[i].xUnit = ghostArray[i].xUnit - brickWidth / 10;
-            ghostArray.deltaX--;
+            ghostArray[i].deltaX--;
         }
         else if (isRightValid.every(condition => condition)) { // Right
             ghostArray[i].xUnit = ghostArray[i].xUnit + brickWidth / 10;
-            ghostArray.deltaX++;
+            ghostArray[i].deltaX++;
         }
         else if (isDownValid.every(condition => condition)) { // Down
-            ghostArray[i].yUnit = ghostArray[i].xUnit + brickWidth / 10;
-            ghostArray.deltaY++;
+            ghostArray[i].yUnit = ghostArray[i].yUnit + brickWidth / 10;
+            ghostArray[i].deltaY++;
         }
         else if (isUpValid.every(condition => condition)) { // Up
-            ghostArray[i].yUnit = ghostArray[i].xUnit - brickWidth / 10;
-            ghostArray.deltaY--;
+            ghostArray[i].yUnit = ghostArray[i].yUnit - brickWidth / 10;
+            ghostArray[i].deltaY--;
         } else {
             let moveToken = Math.floor(Math.random() * 4);
 

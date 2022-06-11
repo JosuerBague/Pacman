@@ -124,8 +124,8 @@ let currWorld = worldsArray[0];
 let pacMan = {
     xUnit: null,
     yUnit: null,
-    xCounter: 0,
-    yCounter: 0,
+    deltaX: 0,
+    deltaY: 0,
     x: 1,
     y: 1,
     init: true,
@@ -235,22 +235,26 @@ generateWorld(currWorld)
 
 
 document.onkeydown = function movePacman(e) {
-    let brickWidth = document.querySelector('.row .wall').offsetWidth / 3;
+    let brickWidth = document.querySelector('.row .wall').offsetWidth / 10;
 
     if (e.keyCode === 38 && currWorld[pacMan.y - 1][pacMan.x] != 2) { // UP
         pacMan.yCounter--;
+        pacMan.deltaY--;
         pacMan.yUnit = pacMan.yUnit - brickWidth;
     }
     else if (e.keyCode === 39 && currWorld[pacMan.y][pacMan.x + 1] != 2) { // Right
         pacMan.xCounter++
+        pacMan.deltaX++;
         pacMan.xUnit = pacMan.xUnit + brickWidth;
     }
     else if (e.keyCode === 40 && currWorld[pacMan.y + 1][pacMan.x] != 2) { // Down
-        pacMan.yCounter++
+        pacMan.yCounter++;
+        pacMan.deltaY++;
         pacMan.yUnit = pacMan.yUnit + brickWidth;
     }
     else if (e.keyCode === 37 && currWorld[pacMan.y][pacMan.x - 1] != 2) { // Left
-        pacMan.xCounter--
+        pacMan.xCounter--;
+        pacMan.deltaX--;
         pacMan.xUnit = pacMan.xUnit - brickWidth;
     }
 
@@ -260,19 +264,42 @@ document.onkeydown = function movePacman(e) {
 }
 
 function updatePacMan(e) {
+    // Change pacMan orientation:
     if (e?.keyCode === 38) {
         document.querySelector('.pacman-img').style.transform = `rotate(-90deg)`;
-    } else if (e?.keyCode === 39) {
+    }
+    else if (e?.keyCode === 39) {
         document.querySelector('.pacman-img').style.transform = `rotate(0deg)`;
-    } else if (e?.keyCode === 40) {
+    }
+    else if (e?.keyCode === 40) {
         document.querySelector('.pacman-img').style.transform = `rotate(90deg)`;
-    } else if (e?.keyCode === 37) {
+    }
+    else if (e?.keyCode === 37) {
         document.querySelector('.pacman-img').style.transform = `rotate(0deg)`;
         document.querySelector('.pacman-img').style.transform = 'scaleX(-1)';
     }
 
-    let brickWidth = document.querySelector('.row .wall').offsetWidth;
+    // Change pacMan array position:
+    if (pacMan.deltaX === 10) {
+        pacMan.x++;
+        pacMan.deltaX = 0;
+    }
+    else if (pacMan.deltaX === -10) {
+        pacMan.x--;
+        pacMan.deltaX = 0;
+    }
 
+    if (pacMan.deltaY === 10) {
+        pacMan.y++;
+        pacMan.deltaY = 0;
+    }
+    else if (pacMan.deltaY === -10) {
+        pacMan.y--;
+        pacMan.deltaY = 0;
+    }
+
+
+    let brickWidth = document.querySelector('.row .wall').offsetWidth;
     if (pacMan.init) {
         pacMan.xUnit = pacMan.x * brickWidth;
         pacMan.yUnit = pacMan.y * brickWidth;

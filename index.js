@@ -264,6 +264,14 @@ document.onkeydown = function movePacman(e) {
 }
 
 function updatePacMan(e) {
+    // Initialize pacman to position (1,1):
+    let brickWidth = document.querySelector('.row .wall').offsetWidth;
+    if (pacMan.init) {
+        pacMan.xUnit = pacMan.x * brickWidth;
+        pacMan.yUnit = pacMan.y * brickWidth;
+        pacMan.init = false;
+    }
+
     // Change pacMan orientation:
     if (e?.keyCode === 38) {
         document.querySelector('.pacman-img').style.transform = `rotate(-90deg)`;
@@ -298,13 +306,6 @@ function updatePacMan(e) {
         pacMan.deltaY = 0;
     }
 
-
-    let brickWidth = document.querySelector('.row .wall').offsetWidth;
-    if (pacMan.init) {
-        pacMan.xUnit = pacMan.x * brickWidth;
-        pacMan.yUnit = pacMan.y * brickWidth;
-        pacMan.init = false;
-    }
 
     document.getElementById('pacman').style.top = `${pacMan.yUnit}px`;
     document.getElementById('pacman').style.left = `${pacMan.xUnit}px`;

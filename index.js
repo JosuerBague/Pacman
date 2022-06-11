@@ -239,7 +239,7 @@ function generateWorld(world) {
 function updateWorld() {
     if (currWorld[pacMan.y][pacMan.x] == 1) {
         currWorld[pacMan.y][pacMan.x] = 0;
-        updateScore(1)
+        updateScore(5)
         generateWorld(currWorld);
 
         if (cherryTrigger < 10) {
@@ -494,18 +494,17 @@ function checkDeath() {
 let ghosty = setInterval(moveGhosts, 75);
 
 function updateScore(num) {
-    let scoreBoard = document.querySelector('.scoreboard');
+    let scoreBoard = document.querySelector('.score');
 
     scoreBoard.textContent = +scoreBoard.textContent + num;
 }
 
+let levelButtons = document.querySelectorAll(".levels button");
 
-// TODO:
-/* 
-    1) Scorebox improvement;
-    2) Maze worlds;
-    3) Ghosts;
-    4) set Cherry locations for each world.
-    5) reset
-    6)
-*/
+levelButtons.forEach(button => {
+    button.addEventListener('click', newLevel);
+
+    function newLevel(e) {
+
+    }
+})

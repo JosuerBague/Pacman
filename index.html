@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacman</title>
 
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fascinate&display=swap" rel="stylesheet">
     <!-- css -->
     <link id="main-style" rel="stylesheet" href="styles.css" />
 </head>
@@ -15,7 +19,17 @@
     <div class="container">
         <div id="menu">
             <div class="menu-container">
-                <div class="scoreboard">0</div>
+                <div class="scoreboard">
+                    <h1>PACMAN</h1>
+                    <span class="score">0</span>
+                </div>
+                <div class="levels">
+                    <button id="lvl1">1</button>
+                    <button id="lvl2">2</button>
+                    <button id="lvl3">3</button>
+                    <button id="lvl4">4</button>
+                    <button id="lvl5">5</button>
+                </div>
             </div>
         </div>
         <div id="world">

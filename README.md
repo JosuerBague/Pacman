@@ -15,7 +15,7 @@ You need 🪙🪙🪙 coins to get fruit 🍒.
 ### PAC-MAPS
 
 #### #1
-<img src="https://github.com/JoshDagat/readme-images/blob/main/pm1.jpg" width=200 alt="pac-map-one"/>
+<img src="https://github.com/JoshDagat/readme-images/blob/main/pm1.jpg" width=300 alt="pac-map-one"/>
 
 #### #2
 <img src="https://github.com/JoshDagat/readme-images/blob/main/pm2.jpg" alt="pac-map-two"/>
